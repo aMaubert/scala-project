@@ -1,6 +1,3 @@
 package projetal2020
 
-
-class Mower(var point: Coordinate, var direction: Direction.Value) {
-
-}
+class Mower(val point: Coordinate, val direction: Direction.Value) {}
