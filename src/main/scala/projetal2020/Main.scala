@@ -11,7 +11,10 @@ object Main extends App {
   // 2 Récupérations des instructions, tondeuses, et topRightCorner
   // On renvoie un parsor exception en case d'erreur
   val rightTopCorner = Parser[Coordinate].parse(lines)
-//  val mowers = Parser[Map[Mower, List[Instructions.Value]]].parse(lines)
+  val mowers = Parser[Map[Mower, List[Instructions.Value]]].parse(lines)
+
+  print("mowers : ")
+  println(mowers)
 
 //  // 3 Executé les tondeuses
 //  val mowerStates : List[MowerState] = MowerExecutor.execute(mowers, rightTopCorner)

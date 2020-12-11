@@ -4,6 +4,7 @@ import scala.annotation.tailrec
 import scala.sys.exit
 
 object Parser {
+  def apply[A](implicit parser: Parser[A]): Parser[A] = parser
 
   def listToCoordinate(numbers: List[Number]): Coordinate = numbers match {
     case Nil      => exit(1)
@@ -37,19 +38,21 @@ object Parser {
       case Some(value) => helpParseCoordinate(value.split(' ').toList, List())
     }
 
-//  @tailrec
-//  def parserMowerHelper(
-//      content: List[String],
-//      currentValue: Map[Mower, List[Instructions.Value]]
-//  ): Map[Mower, List[Instructions.Value]] = content match {
-//    case Nil       => currentValue
-//    case _ :: tail => parserMowerHelper(tail, currentValue)
-//  }
+  @tailrec
+  def parserMowerHelper(
+      content: List[String],
+      currentValue: Map[Mower, List[Instructions.Value]]
+  ): Map[Mower, List[Instructions.Value]] = content match {
+    case Nil       => currentValue
+    case _ :: tail => parserMowerHelper(tail, currentValue)
+  }
 
-//  implicit val parserMower: Parser[Map[Mower, List[Instructions.Value] ]] = (content: List[String]) => content match {
-//    case Nil => exit(1)
-//    case head :: tail => parserMowerHelper(tail, Map())
-//  }
+  implicit val parserMower: Parser[Map[Mower, List[Instructions.Value]]] =
+    (content: List[String]) =>
+      content match {
+        case Nil => exit(1)
+        case _ :: tail => parserMowerHelper(tail, Map())
+      }
 }
 
 trait Parser[A] {
