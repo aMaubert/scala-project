@@ -1,6 +1,8 @@
 package projetal2020
 
 import better.files._
+import projetal2020.CoordinateModule.Coordinate
+import projetal2020.MowerModule.Mowers
 
 object Main extends App {
 
@@ -10,8 +12,8 @@ object Main extends App {
 
   // 2 Récupérations des instructions, tondeuses, et topRightCorner
   // On renvoie un parsor exception en case d'erreur
-  val rightTopCorner = Parser[Coordinate].parse(lines)
-  val mowers = Parser[Map[Mower, List[Instructions.Value]]].parse(lines)
+  val rightTopCorner = Coordinate.parser.parse(lines)
+  val mowers = Mowers.parser.parse(lines)
 
   print("mowers : ")
   println(mowers)
