@@ -21,17 +21,33 @@ object MowerExecutor {
           case Direction.South => mower.direction = Direction.East
           case Direction.East => mower.direction = Direction.North
         }
-      case _ => "Invalid Rotation"
+      case _ => print("Invalid Rotation")
+    }
+    mower
+  }
+
+  def forward(mower: Mower, instruction: Instructions.Value): Mower = {
+    if(instruction == Instructions.Forward){
+      mower.direction match {
+        case Direction.North => mower.point.y = mower.point.y + 1
+        case Direction.East => mower.point.x = mower.point.x + 1
+        case Direction.South => mower.point.y = mower.point.y + -1 1
+        case Direction.West => mower.point.x = mower.point.x + -1
+      }
     }
     mower
   }
 
   def executeInstruction(mower: Mower, instruction: Instructions.Value): Mower = {
-    instruction match {
-      case 'L' => print('L')
-      case 'R' => print('R')
-      case 'A' => print('A')
+
+    if(instruction == Instructions.Right || instruction == Instructions.Left){
+      changeDirection(mower, instruction)
     }
+
+    if(instruction == Instructions.Forward){
+      forward(mower, instruction)
+    }
+    mower
   }
 
   def executeInstructionList(mower: Mower, instructions: List[Instructions.Value]): MowerState = ???
