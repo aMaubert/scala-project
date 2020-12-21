@@ -1,10 +1,10 @@
 package projetal2020
 
-import better.files._
+//import better.files._
 
 object Main extends App {
   println("Ici le programme principal")
-
+  /*
   // 1 on va récupérer toutes les lignes du fichier
   val file: File = File("../../input.txt") // using constructor
   val lines = file.lines.toList
@@ -30,5 +30,5 @@ object Main extends App {
   //Beautiffer
   outpuFile.createIfNotExists()
     .appendLine(Report.writes.writes(report).toString())
-
+ */
 }

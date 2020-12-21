@@ -1,6 +1,5 @@
 package projetal2020
 
-
 object Instructions extends Enumeration {
   val Left, Right, Forward = Value
 

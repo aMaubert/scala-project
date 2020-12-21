@@ -1,63 +1,86 @@
 package projetal2020
 
-import projetal2020.Direction
+import scala.sys.exit
 
 object MowerExecutor {
 
   // TODO : throw exception on default
-  def changeDirection(mower: Mower, rotationInstruction: Instructions.Value): Mower = {
-    rotationInstruction match {
-      case 'R' =>
-        mower.direction match {
-          case Direction.North => mower.direction = Direction.East
-          case Direction.East => mower.direction = Direction.South
-          case Direction.South => mower.direction = Direction.West
-          case Direction.West => mower.direction = Direction.North
-        }
-      case 'L' =>
-        mower.direction match {
-          case Direction.North => mower.direction = Direction.West
-          case Direction.West => mower.direction = Direction.South
-          case Direction.South => mower.direction = Direction.East
-          case Direction.East => mower.direction = Direction.North
-        }
-      case _ => print("Invalid Rotation")
-    }
-    mower
-  }
-
-  def forward(mower: Mower, instruction: Instructions.Value): Mower = {
-    if(instruction == Instructions.Forward){
+  def changeDirection(
+      mower: Mower,
+      rotationInstruction: Instructions.Value
+  ): Mower = rotationInstruction match {
+    case Instructions.Right =>
       mower.direction match {
-        case Direction.North => mower.point.y = mower.point.y + 1
-        case Direction.East => mower.point.x = mower.point.x + 1
-        case Direction.South => mower.point.y = mower.point.y + -1 1
-        case Direction.West => mower.point.x = mower.point.x + -1
+        case Direction.North => mower._direction.update(Direction.East)(mower)
+        case Direction.East  => mower._direction.update(Direction.South)(mower)
+        case Direction.South => mower._direction.update(Direction.West)(mower)
+        case Direction.West  => mower._direction.update(Direction.North)(mower)
       }
-    }
-    mower
+    case Instructions.Left =>
+      mower.direction match {
+        case Direction.North => mower._direction.update(Direction.West)(mower)
+        case Direction.West  => mower._direction.update(Direction.South)(mower)
+        case Direction.South => mower._direction.update(Direction.East)(mower)
+        case Direction.East  => mower._direction.update(Direction.North)(mower)
+      }
+    case _ => exit(1)
   }
 
-  def executeInstruction(mower: Mower, instruction: Instructions.Value): Mower = {
-
-    if(instruction == Instructions.Right || instruction == Instructions.Left){
-      changeDirection(mower, instruction)
+  def getDirection(mower: Mower): Mower = mower.direction match {
+    case Direction.North => {
+      val _mowerCoord: Lens[Mower, Number] =
+        mower._coordinate.and(mower.point._coordinateX)
+      val y = mower.point._coordinateY.get.toString()
+      val updatedMower = _mowerCoord.update(y.toInt + 1)(mower)
+      updatedMower
     }
-
-    if(instruction == Instructions.Forward){
-      forward(mower, instruction)
+    case Direction.East => {
+      val _mowerCoord: Lens[Mower, Number] =
+        mower._coordinate.and(mower.point._coordinateX)
+      val x = mower.point._coordinateX.get.toString()
+      val updatedMower = _mowerCoord.update(x.toInt + 1)(mower)
+      updatedMower
     }
-    mower
+    case Direction.South => {
+      val _mowerCoord: Lens[Mower, Number] =
+        mower._coordinate.and(mower.point._coordinateX)
+      val y = mower.point._coordinateY.get.toString()
+      val updatedMower = _mowerCoord.update(y.toInt - 1)(mower)
+      updatedMower
+    }
+    case Direction.West => {
+      val _mowerCoord: Lens[Mower, Number] =
+        mower._coordinate.and(mower.point._coordinateX)
+      val x = mower.point._coordinateX.get.toString()
+      val updatedMower = _mowerCoord.update(x.toInt - 1)(mower)
+      updatedMower
+    }
+    case _ => exit(1)
+
   }
 
-  def executeInstructionList(mower: Mower, instructions: List[Instructions.Value]): MowerState = ???
+  def forward(mower: Mower, instruction: Instructions.Value): Mower =
+    instruction match {
+      case Instructions.Forward => getDirection(mower)
 
-  def executeHelper(mowers: Map[Mower, List[Instructions.Value]], rightTopCorner: Coordinate, value: List[Nothing]): List[MowerState] = {
+      case _ => exit(1)
+    }
 
-  }
+  def executeInstruction(mower: Mower, instruction: Instructions.Value): Mower =
+    instruction match {
+      case Instructions.Right   => changeDirection(mower, instruction)
+      case Instructions.Left    => changeDirection(mower, instruction)
+      case Instructions.Forward => forward(mower, instruction)
+      case _                    => exit(1)
 
-  def execute(mowers: Map[Mower, List[Instructions.Value]], rightTopCorner: Coordinate): List[MowerState] =  {
+    }
+
+  // def executeInstructionList(mower: Mower, instructions: List[Instructions.Value]): MowerState = ???
+
+  //def executeHelper(mowers: Map[Mower, List[Instructions.Value]], rightTopCorner: Coordinate, value: List[Nothing]): List[MowerState] = {}
+
+  /* def execute(mowers: Map[Mower, List[Instructions.Value]], rightTopCorner: Coordinate): List[MowerState] =  {
     executeHelper(mowers, rightTopCorner, List())
   }
-
+ */
 }
