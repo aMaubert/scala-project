@@ -4,7 +4,7 @@ import scala.sys.exit
 
 object MowerExecutor {
 
-  // TODO : throw exception on default
+  // TODO : throw exception on default instead of exit ?
   def changeDirection(
       mower: Mower,
       rotationInstruction: Instructions.Value
@@ -75,7 +75,10 @@ object MowerExecutor {
 
     }
 
-  // def executeInstructionList(mower: Mower, instructions: List[Instructions.Value]): MowerState = ???
+   /*def executeInstructionList(mower: Mower, instructions: List[Instructions.Value]): MowerState = instructions match {
+     case Nil => exit(1)
+     case head :: tail => executeInstruction(mower, head)
+   }*/
 
   //def executeHelper(mowers: Map[Mower, List[Instructions.Value]], rightTopCorner: Coordinate, value: List[Nothing]): List[MowerState] = {}
 
