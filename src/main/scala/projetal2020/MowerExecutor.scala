@@ -1,5 +1,6 @@
 package projetal2020
 
+import projetal2020.Instructions.{instructionListTostringList, stringToInstructionList}
 import projetal2020.MowerModule.Mower
 
 import scala.sys.exit
@@ -77,10 +78,14 @@ object MowerExecutor {
 
     }
 
-  /*def executeInstructionList(mower: Mower, instructions: List[Instructions.Value]): MowerState = instructions match {
+  def executeInstructionList(mower: Mower, instructions: List[Instructions.Value]): MowerState = instructions match {
      case Nil => exit(1)
-     case head :: tail => executeInstruction(mower, head)
-   }*/
+     case head :: tail => {
+       val startMower = mower
+       executeInstruction(mower, head)
+       new MowerState(startMower, instructionListTostringList(tail, List("")), mower)
+     }
+   }
 
   //def executeHelper(mowers: Map[Mower, List[Instructions.Value]], rightTopCorner: Coordinate, value: List[Nothing]): List[MowerState] = {}
 
