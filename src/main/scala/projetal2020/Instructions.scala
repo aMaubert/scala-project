@@ -17,8 +17,8 @@ object Instructions extends Enumeration {
   }
 
   def unParse(instructions: Instructions.Value): String = instructions match {
-    case Left => "G"
-    case Right => "D"
+    case Left    => "G"
+    case Right   => "D"
     case Forward => "A"
     case _ =>
       print("instructions : ")
@@ -28,9 +28,9 @@ object Instructions extends Enumeration {
 
   @tailrec
   def instructionListTostringList(
-                                   content: List[Instructions.Value],
-                                   currentValue: List[String]
-                                 ): List[String] = content match {
+      content: List[Instructions.Value],
+      currentValue: List[String]
+  ): List[String] = content match {
     case Nil => currentValue
     case head :: tail =>
       instructionListTostringList(

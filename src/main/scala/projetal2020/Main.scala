@@ -19,10 +19,15 @@ object Main extends App {
   println(mowers)
 
   //  // 3 Executé les tondeuses
-  //  val mowerStates : List[MowerState] = MowerExecutor.execute(mowers, rightTopCorner)
+  val mowerStates: List[MowerState] =
+    MowerExecutor.execute(mowers, rightTopCorner)
+
+  print("mowerStates : ")
+  println(mowerStates)
+  mowerStates.foreach(mowerState => println(mowerState))
   //
   //  // 4 On récupère le rapport
-  //  val report = new Report(rightTopCorner, mowerStates)
+  //val report = new Report(rightTopCorner, mowerStates)
   //
   //  // 5 On écrit le rapport dans un fichier
   //  val outpuFile: File = File("../../output.txt") // using constructor
