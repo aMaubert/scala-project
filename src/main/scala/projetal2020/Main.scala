@@ -23,7 +23,6 @@ object Main extends App {
     MowerExecutor.execute(mowers, rightTopCorner)
 
   print("mowerStates : ")
-  println(mowerStates)
   mowerStates.foreach(mowerState => println(mowerState))
   //
   //  // 4 On récupère le rapport

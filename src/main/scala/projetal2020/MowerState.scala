@@ -17,7 +17,7 @@ class MowerState(
     val returnString = new StringBuffer
     instructions foreach { instruct =>
       returnString.append(instruct)
-    } //println (key + "-->" + value)}
+    }
     returnString.toString
   }
 

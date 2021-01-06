@@ -8,17 +8,12 @@ import scala.sys.exit
 
 object CoordinateModule {
 
-  /*class Coordinate(val x: Number, val y: Number) {
-    override def toString: String =
-      "Coordinate( x=" + x.toString + " , y=" + y.toString + " )"
-  }*/
-
   case class Coordinate(x: Number, y: Number) {
 
     override def toString: String =
       "Coordinate( x=" + x.toString + " , y=" + y.toString + " )"
 
-    val _coordinateX = new Lens[Coordinate, Number] {
+    val _coordinateX: Lens[Coordinate, Number] = new Lens[Coordinate, Number] {
       override def get: (Coordinate) => Number = _.x
 
       override def set: (Coordinate, Number) => Coordinate = {
@@ -26,7 +21,7 @@ object CoordinateModule {
       }
     }
 
-    val _coordinateY = new Lens[Coordinate, Number] {
+    val _coordinateY: Lens[Coordinate, Number] = new Lens[Coordinate, Number] {
       override def get: (Coordinate) => Number = _.y
 
       override def set: (Coordinate, Number) => Coordinate = {
