@@ -6,46 +6,35 @@ import projetal2020.MowerModule.Mower
 
 import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
-import scala.sys.exit
 
 object MowerExecutor {
 
-  // TODO : throw exception on default instead of exit ?
   def changeDirection(
       mower: Mower,
       rotationInstruction: Instructions.Value
   ): Mower = rotationInstruction match {
     case Instructions.Right =>
       mower.direction match {
-        case Direction.North => {
+        case Direction.North =>
           Mower(mower.point, Direction.East)
-        }
-        case Direction.East => {
+        case Direction.East =>
           Mower(mower.point, Direction.South)
-        }
-        case Direction.South => {
+        case Direction.South =>
           Mower(mower.point, Direction.West)
-        }
-        case Direction.West => {
+        case Direction.West =>
           Mower(mower.point, Direction.North)
-        }
       }
     case Instructions.Left =>
       mower.direction match {
-        case Direction.North => {
+        case Direction.North =>
           Mower(mower.point, Direction.West)
-        }
-        case Direction.West => {
+        case Direction.West =>
           Mower(mower.point, Direction.South)
-        }
-        case Direction.South => {
+        case Direction.South =>
           Mower(mower.point, Direction.East)
-        }
-        case Direction.East => {
+        case Direction.East =>
           Mower(mower.point, Direction.North)
-        }
       }
-    case _ => exit(1)
   }
 
   def getDirection(mower: Mower, rightTopCorner: Coordinate): Mower =
@@ -84,7 +73,6 @@ object MowerExecutor {
         } else {
           mower
         }
-      case _ => exit(1)
     }
 
   def forward(
@@ -93,7 +81,6 @@ object MowerExecutor {
       rightTopCorner: Coordinate
   ): Mower = instruction match {
     case Instructions.Forward => getDirection(mower, rightTopCorner)
-    case _                    => exit(1)
   }
 
   def executeInstruction(
@@ -105,7 +92,6 @@ object MowerExecutor {
       case Instructions.Right   => changeDirection(mower, instruction)
       case Instructions.Left    => changeDirection(mower, instruction)
       case Instructions.Forward => forward(mower, instruction, rightTopCorner)
-      case _                    => exit(1)
     }
   }
 
@@ -115,10 +101,9 @@ object MowerExecutor {
       instructions: List[Instructions.Value],
       rightTopCorner: Coordinate
   ): Mower = instructions match {
-    case Nil => exit(1)
+    case Nil => mower
     case head :: tail =>
       val updatedMower = executeInstruction(mower, head, rightTopCorner)
-      //println(updatedMower)
       if (tail.nonEmpty) {
         executeInstructionListHelper(updatedMower, tail, rightTopCorner)
       } else {
