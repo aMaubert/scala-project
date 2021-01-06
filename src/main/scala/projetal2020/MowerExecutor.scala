@@ -17,69 +17,73 @@ object MowerExecutor {
   ): Mower = rotationInstruction match {
     case Instructions.Right =>
       mower.direction match {
-        case Direction.North => mower._direction.update(Direction.East)(mower)
-        case Direction.East  => mower._direction.update(Direction.South)(mower)
-        case Direction.South => mower._direction.update(Direction.West)(mower)
-        case Direction.West  => mower._direction.update(Direction.North)(mower)
+        case Direction.North => {
+          Mower(mower.point, Direction.East)
+        }
+        case Direction.East => {
+          Mower(mower.point, Direction.South)
+        }
+        case Direction.South => {
+          Mower(mower.point, Direction.West)
+        }
+        case Direction.West => {
+          Mower(mower.point, Direction.North)
+        }
       }
     case Instructions.Left =>
       mower.direction match {
-        case Direction.North => mower._direction.update(Direction.West)(mower)
-        case Direction.West  => mower._direction.update(Direction.South)(mower)
-        case Direction.South => mower._direction.update(Direction.East)(mower)
-        case Direction.East  => mower._direction.update(Direction.North)(mower)
+        case Direction.North => {
+          Mower(mower.point, Direction.West)
+        }
+        case Direction.West => {
+          Mower(mower.point, Direction.South)
+        }
+        case Direction.South => {
+          Mower(mower.point, Direction.East)
+        }
+        case Direction.East => {
+          Mower(mower.point, Direction.North)
+        }
       }
     case _ => exit(1)
   }
 
   def getDirection(mower: Mower, rightTopCorner: Coordinate): Mower =
     mower.direction match {
-      case Direction.North => {
-        val _mowerCoord: Lens[Mower, Number] = {
-          mower._coordinate.and(mower.point._coordinateY)
-        }
-        if (rightTopCorner.y.intValue() != mower.point.y.intValue()) {
-          val updatedMower =
-            _mowerCoord.update(mower.point.y.intValue() + 1)(mower)
-          updatedMower
+      case Direction.North =>
+        if (rightTopCorner.y.intValue() >= mower.point.y.intValue()) {
+          val updatedCoord =
+            new Coordinate(mower.point.x, mower.point.y.intValue() + 1)
+          Mower(updatedCoord, mower.direction)
         } else {
           mower
         }
-
-      }
-      case Direction.East => {
-        val _mowerCoord: Lens[Mower, Number] =
-          mower._coordinate.and(mower.point._coordinateX)
-        if (rightTopCorner.x.intValue() != mower.point.x.intValue()) {
-          val updatedMower =
-            _mowerCoord.update(mower.point.x.intValue() + 1)(mower)
-          updatedMower
+      case Direction.East =>
+        if (rightTopCorner.x.intValue() >= mower.point.x.intValue()) {
+          println(mower.point.x.intValue().toString)
+          val updatedCoord =
+            new Coordinate(mower.point.x.intValue() + 1, mower.point.y)
+          Mower(updatedCoord, mower.direction)
         } else {
           mower
         }
-      }
-      case Direction.South => {
-        val _mowerCoord: Lens[Mower, Number] =
-          mower._coordinate.and(mower.point._coordinateY)
-        if (rightTopCorner.y.intValue() != mower.point.y.intValue()) {
-          val updatedMower =
-            _mowerCoord.update(mower.point.y.intValue() - 1)(mower)
-          updatedMower
+      case Direction.South =>
+        if (mower.point.y.intValue() > 0) {
+          val updatedCoord =
+            new Coordinate(mower.point.x, mower.point.y.intValue() - 1)
+          Mower(updatedCoord, mower.direction)
         } else {
           mower
         }
-      }
-      case Direction.West => {
-        val _mowerCoord: Lens[Mower, Number] =
-          mower._coordinate.and(mower.point._coordinateX)
-        if (rightTopCorner.x.intValue() != mower.point.x.intValue()) {
-          val updatedMower =
-            _mowerCoord.update(mower.point.x.intValue() - 1)(mower)
-          updatedMower
+      case Direction.West =>
+        if (mower.point.x.intValue() > 0) {
+          println(mower.point.x.intValue().toString)
+          val updatedCoord =
+            new Coordinate(mower.point.x.intValue() - 1, mower.point.y)
+          Mower(updatedCoord, mower.direction)
         } else {
           mower
         }
-      }
       case _ => exit(1)
     }
 
@@ -114,6 +118,7 @@ object MowerExecutor {
     case Nil => exit(1)
     case head :: tail =>
       val updatedMower = executeInstruction(mower, head, rightTopCorner)
+      //println(updatedMower)
       if (tail.nonEmpty) {
         executeInstructionListHelper(updatedMower, tail, rightTopCorner)
       } else {

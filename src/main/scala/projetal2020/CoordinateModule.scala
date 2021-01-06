@@ -12,22 +12,6 @@ object CoordinateModule {
 
     override def toString: String =
       "Coordinate( x=" + x.toString + " , y=" + y.toString + " )"
-
-    val _coordinateX: Lens[Coordinate, Number] = new Lens[Coordinate, Number] {
-      override def get: (Coordinate) => Number = _.x
-
-      override def set: (Coordinate, Number) => Coordinate = {
-        case (c, n) => c.copy(x = n)
-      }
-    }
-
-    val _coordinateY: Lens[Coordinate, Number] = new Lens[Coordinate, Number] {
-      override def get: (Coordinate) => Number = _.y
-
-      override def set: (Coordinate, Number) => Coordinate = {
-        case (c, n) => c.copy(y = n)
-      }
-    }
   }
 
   object Coordinate {
