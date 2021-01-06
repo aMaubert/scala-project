@@ -8,8 +8,6 @@ import scala.annotation.tailrec
 
 object MowerModule {
 
-  case class DonneesIncorectesException(msg: String) extends Exception
-
   case class Mower(point: Coordinate, direction: Direction.Value) {
     override def toString: String =
       "Mower ( point=" + point.toString + " , direction=" + direction.toString + " )"

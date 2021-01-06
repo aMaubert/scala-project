@@ -4,7 +4,6 @@ import projetal2020.ParserModule.Parser
 import projetal2020.ParserModule.Parser.isAllDigit
 
 import scala.annotation.tailrec
-import scala.sys.exit
 
 object CoordinateModule {
 
@@ -31,12 +30,15 @@ object CoordinateModule {
   }
 
   object Coordinate {
-
+    @SuppressWarnings(Array("org.wartremover.warts.Throw"))
     def listToCoordinate(numbers: List[Number]): Coordinate = numbers match {
-      case Nil      => exit(1)
-      case _ :: Nil => exit(1)
+      case Nil => throw DonneesIncorectesException("Il doit y avoir 2 nombres")
+      case _ :: Nil =>
+        throw DonneesIncorectesException("Il doit y avoir 2 nombres")
       case head :: tail =>
-        new Coordinate(tail.headOption.getOrElse({ exit(1) }), head)
+        new Coordinate(tail.headOption.getOrElse({
+          throw DonneesIncorectesException("Il doit y avoir 2 nombres")
+        }), head)
     }
 
     @tailrec
@@ -51,9 +53,13 @@ object CoordinateModule {
         else helpParseCoordinate(tail, numbers)
     }
 
+    @SuppressWarnings(Array("org.wartremover.warts.Throw"))
     implicit val parser: Parser[Coordinate] = (content: List[String]) =>
       content.headOption match {
-        case None        => exit(1)
+        case None =>
+          throw DonneesIncorectesException(
+            "La list de string ne doit pas être vide ."
+          )
         case Some(value) => helpParseCoordinate(value.split(' ').toList, List())
       }
   }
