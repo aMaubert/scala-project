@@ -24,11 +24,14 @@ object Main extends App {
 
   print("mowerStates : ")
   mowerStates.foreach(mowerState => println(mowerState))
+
+  // 4 On récupère le rapport
+  val report = new Report(rightTopCorner, mowerStates)
+  println("Rapport :")
+  println(report)
+
   //
-  //  // 4 On récupère le rapport
-  //val report = new Report(rightTopCorner, mowerStates)
-  //
-  //  // 5 On écrit le rapport dans un fichier
+  //  5 On écrit le rapport dans un fichier
   //  val outpuFile: File = File("../../output.txt") // using constructor
   //
   //  // 6

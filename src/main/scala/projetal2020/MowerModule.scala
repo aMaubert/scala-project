@@ -5,9 +5,11 @@ import projetal2020.ParserModule.Parser.isAllDigit
 import projetal2020.ParserModule.Parser
 
 import scala.annotation.tailrec
-import scala.sys.exit
 
 object MowerModule {
+
+  case class DonneesIncorectesException(msg: String) extends Exception
+
   case class Mower(point: Coordinate, direction: Direction.Value) {
     override def toString: String =
       "Mower ( point=" + point.toString + " , direction=" + direction.toString + " )"
@@ -31,19 +33,29 @@ object MowerModule {
   }
 
   object Mowers {
+
+    @SuppressWarnings(Array("org.wartremover.warts.Throw"))
     def stringToMower(splitContent: List[String]): Mower = splitContent match {
-      case Nil => exit(1)
+      case Nil => throw DonneesIncorectesException("List Should not be empty")
       case head :: tail =>
         tail match {
-          case Nil => exit(1)
+          case Nil =>
+            throw DonneesIncorectesException(
+              "List should have more than 1 element"
+            )
           case head2 :: tail2 =>
             tail2 match {
-              case Nil => exit(1)
+              case Nil =>
+                throw DonneesIncorectesException(
+                  "List should have more than 2 elements"
+                )
               case head3 :: _ =>
                 if (!isAllDigit(head.toList) || !isAllDigit(head2.toList))
-                  exit(1)
+                  throw DonneesIncorectesException(
+                    "Le 1er  et 2ème éléments devraient être des nombres"
+                  )
                 else
-                  new Mower(
+                  Mower(
                     new Coordinate(head.toInt, head2.toInt),
                     Direction.parse(head3.charAt(0))
                   )
@@ -65,12 +77,13 @@ object MowerModule {
     }
 
     @tailrec
+    @SuppressWarnings(Array("org.wartremover.warts.Throw"))
     def parserMowerHelper(
         content: List[String],
         currentValue: Map[Mower, List[Instructions.Value]]
     ): Map[Mower, List[Instructions.Value]] = content match {
       case Nil      => currentValue
-      case _ :: Nil => exit(1)
+      case _ :: Nil => throw DonneesIncorectesException("Can't parse mower")
       case head :: tail =>
         parserMowerHelper(
           tail.drop(1),
@@ -79,7 +92,7 @@ object MowerModule {
               stringToMower(head.split(" ").toList) -> stringToInstructionList(
                 tail.headOption
                   .getOrElse({
-                    exit(1)
+                    throw DonneesIncorectesException("Can't parse mower")
                   }),
                 List()
               )
@@ -87,11 +100,11 @@ object MowerModule {
           )
         )
     }
-
+    @SuppressWarnings(Array("org.wartremover.warts.Throw"))
     implicit val parser: Parser[Map[Mower, List[Instructions.Value]]] =
       (content: List[String]) =>
         content match {
-          case Nil       => exit(1)
+          case Nil       => throw DonneesIncorectesException("boooom")
           case _ :: tail => parserMowerHelper(tail, Map())
         }
   }
