@@ -1,0 +1,39 @@
+{
+  "limit" : {
+    "x" : 5,
+    "y" : 5
+  },
+  "mowersStates" : [ {
+    "start" : {
+      "point" : {
+        "x" : 1,
+        "y" : 2
+      },
+      "direction" : "North"
+    },
+    "instructions" : [ "Left", "Forward", "Left", "Forward", "Left", "Forward", "Left", "Forward", "Forward" ],
+    "end" : {
+      "point" : {
+        "x" : 1,
+        "y" : 3
+      },
+      "direction" : "North"
+    }
+  }, {
+    "start" : {
+      "point" : {
+        "x" : 3,
+        "y" : 3
+      },
+      "direction" : "East"
+    },
+    "instructions" : [ "Forward", "Forward", "Right", "Forward", "Forward", "Right", "Forward", "Right", "Right", "Forward" ],
+    "end" : {
+      "point" : {
+        "x" : 5,
+        "y" : 1
+      },
+      "direction" : "East"
+    }
+  } ]
+}

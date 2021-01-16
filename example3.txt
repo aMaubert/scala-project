@@ -1,5 +1,5 @@
 2 2
 1 1 N
-G
+L
 0 0 E
-AGADA
+FLFRF

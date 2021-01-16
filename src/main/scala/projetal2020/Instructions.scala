@@ -5,9 +5,9 @@ object Instructions extends Enumeration {
 
   @SuppressWarnings(Array("org.wartremover.warts.Throw"))
   def parse(letter: Char): Instructions.Value = letter match {
-    case 'G' => Left
-    case 'D' => Right
-    case 'A' => Forward
+    case 'L' => Left
+    case 'R' => Right
+    case 'F' => Forward
     case _ =>
       throw DonneesIncorectesException("Error parse Instruction .")
   }
