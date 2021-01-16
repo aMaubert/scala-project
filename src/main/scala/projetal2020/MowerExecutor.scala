@@ -1,7 +1,6 @@
 package projetal2020
 
 import projetal2020.CoordinateModule.Coordinate
-import projetal2020.Instructions.instructionListTostringList
 import projetal2020.MowerModule.Mower
 
 import scala.annotation.tailrec
@@ -40,7 +39,7 @@ object MowerExecutor {
   def getDirection(mower: Mower, rightTopCorner: Coordinate): Mower =
     mower.direction match {
       case Direction.North =>
-        if (rightTopCorner.y.intValue() >= mower.point.y.intValue()) {
+        if (rightTopCorner.y.intValue() > mower.point.y.intValue()) {
           val updatedCoord =
             new Coordinate(mower.point.x, mower.point.y.intValue() + 1)
           Mower(updatedCoord, mower.direction)
@@ -48,8 +47,7 @@ object MowerExecutor {
           mower
         }
       case Direction.East =>
-        if (rightTopCorner.x.intValue() >= mower.point.x.intValue()) {
-          println(mower.point.x.intValue().toString)
+        if (rightTopCorner.x.intValue() > mower.point.x.intValue()) {
           val updatedCoord =
             new Coordinate(mower.point.x.intValue() + 1, mower.point.y)
           Mower(updatedCoord, mower.direction)
@@ -66,7 +64,6 @@ object MowerExecutor {
         }
       case Direction.West =>
         if (mower.point.x.intValue() > 0) {
-          println(mower.point.x.intValue().toString)
           val updatedCoord =
             new Coordinate(mower.point.x.intValue() - 1, mower.point.y)
           Mower(updatedCoord, mower.direction)
@@ -121,7 +118,7 @@ object MowerExecutor {
       executeInstructionListHelper(mower, instructions, rightTopCorner)
     new MowerState(
       startMower,
-      instructionListTostringList(instructions, List()),
+      instructions,
       updatedMower
     )
   }

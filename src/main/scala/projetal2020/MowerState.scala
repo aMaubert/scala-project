@@ -1,30 +1,19 @@
 package projetal2020
 
-import projetal2020.MowerModule.Mower
+import play.api.libs.json.{Json, Writes}
+import projetal2020.MowerModule.{Mower}
 
 ///**
 // * @param start
 // * @param instructions
 // * @param end
 // */
-class MowerState(
-    val start: Mower,
-    val instructions: List[String],
-    val end: Mower
-) {
+case class MowerState(
+    start: Mower,
+    instructions: List[Instructions.Value],
+    end: Mower
+) {}
 
-  def printableInstructionList: String = {
-    val returnString = new StringBuffer
-    instructions foreach { instruct =>
-      returnString.append(instruct)
-    }
-    returnString.toString
-  }
-
-  override def toString: String = {
-
-    "[Start Mower : " + start.toString +
-      ", Instructions List : " + printableInstructionList +
-      ", End Mower : " + end.toString + "]"
-  }
+object MowerState {
+  implicit val jsonWriter: Writes[MowerState] = Json.writes[MowerState]
 }

@@ -1,0 +1,76 @@
+{
+  "limit" : {
+    "x" : 3,
+    "y" : 10
+  },
+  "mowersStates" : [
+    {
+    "start" : {
+      "point" : {
+        "x" : 3,
+        "y" : 10
+      },
+      "direction" : "North"
+    },
+    "instructions" : [ "Forward", "Forward", "Forward", "Forward", "Forward", "Forward" ],
+    "end" : {
+      "point" : {
+        "x" : 3,
+        "y" : 10
+      },
+      "direction" : "North"
+    }
+  },
+    {
+    "start" : {
+      "point" : {
+        "x" : 0,
+        "y" : 0
+      },
+      "direction" : "South"
+    },
+    "instructions" : [ "Forward", "Forward", "Forward", "Forward", "Forward", "Forward", "Forward" ],
+    "end" : {
+      "point" : {
+        "x" : 0,
+        "y" : 0
+      },
+      "direction" : "South"
+    }
+  },
+    {
+    "start" : {
+      "point" : {
+        "x" : 0,
+        "y" : 0
+      },
+      "direction" : "West"
+    },
+    "instructions" : [ "Forward", "Forward", "Forward", "Forward", "Forward", "Forward", "Forward" ],
+    "end" : {
+      "point" : {
+        "x" : 0,
+        "y" : 0
+      },
+      "direction" : "West"
+    }
+  },
+    {
+    "start" : {
+      "point" : {
+        "x" : 3,
+        "y" : 10
+      },
+      "direction" : "East"
+    },
+    "instructions" : [ "Forward", "Forward", "Forward", "Forward", "Forward", "Forward", "Forward" ],
+    "end" : {
+      "point" : {
+        "x" : 3,
+        "y" : 10
+      },
+      "direction" : "East"
+    }
+  }
+  ]
+}

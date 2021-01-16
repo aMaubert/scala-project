@@ -1,5 +1,6 @@
 package projetal2020
 
+import play.api.libs.json.{Json, Writes}
 import projetal2020.ParserModule.Parser
 import projetal2020.ParserModule.Parser.isAllDigit
 
@@ -7,15 +8,18 @@ import scala.annotation.tailrec
 
 object CoordinateModule {
 
-  case class Coordinate(x: Number, y: Number) {
+  case class Coordinate(x: Int, y: Int) {
 
     override def toString: String =
       "Coordinate( x=" + x.toString + " , y=" + y.toString + " )"
   }
 
   object Coordinate {
+
+    implicit val writes: Writes[Coordinate] = Json.writes[Coordinate]
+
     @SuppressWarnings(Array("org.wartremover.warts.Throw"))
-    def listToCoordinate(numbers: List[Number]): Coordinate = numbers match {
+    def listToCoordinate(numbers: List[Int]): Coordinate = numbers match {
       case Nil => throw DonneesIncorectesException("Il doit y avoir 2 nombres")
       case _ :: Nil =>
         throw DonneesIncorectesException("Il doit y avoir 2 nombres")
@@ -28,7 +32,7 @@ object CoordinateModule {
     @tailrec
     def helpParseCoordinate(
         split: List[String],
-        numbers: List[Number]
+        numbers: List[Int]
     ): Coordinate = split match {
       case Nil => listToCoordinate(numbers)
       case head :: tail =>

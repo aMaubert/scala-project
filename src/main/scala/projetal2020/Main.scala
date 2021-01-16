@@ -1,44 +1,37 @@
 package projetal2020
 
 import better.files._
+import play.api.libs.json.Json
 import projetal2020.CoordinateModule.Coordinate
-import projetal2020.MowerModule.Mowers
+import projetal2020.MowerModule.Mower
 
 object Main extends App {
 
   // 1 on va récupérer toutes les lignes du fichier
-  val file: File = File("input.txt") // using constructor
+
+  val fileName = sys.env("MOWER_INPUT")
+  val file: File = File(fileName) // using constructor
   val lines = file.lines.toList
 
-  // 2 Récupérations des instructions, tondeuses, et topRightCorner
-  // On renvoie un parsor exception en case d'erreur
+  // 2 Récupération des instructions, tondeuses, et topRightCorner
+  // On renvoie une exception lors d'un cas dérreur dans le parseur
   val rightTopCorner = Coordinate.parser.parse(lines)
-  val mowers = Mowers.parser.parse(lines)
+  val mowers = Mower.parser.parse(lines)
 
-  print("mowers : ")
-  println(mowers)
-
-  //  // 3 Executé les tondeuses
+  // 3 Executé  les instructions pour chaque tondeuse de manière consécutive
   val mowerStates: List[MowerState] =
     MowerExecutor.execute(mowers, rightTopCorner)
 
-  print("mowerStates : ")
-  mowerStates.foreach(mowerState => println(mowerState))
-
   // 4 On récupère le rapport
   val report = new Report(rightTopCorner, mowerStates)
-  println("Rapport :")
-  println(report)
 
-  //
-  //  5 On écrit le rapport dans un fichier
-  //  val outpuFile: File = File("../../output.txt") // using constructor
-  //
-  //  // 6
-  //  //Should Beauttifer the JSON
-  //  // https://jsonformatter.curiousconcept.com/
-  //  //Beautiffer
-  //  outpuFile.createIfNotExists()
-  //    .appendLine(Report.writes.writes(report).toString())
+  //  5 On ouvre un fichier JSON de sortis
+  val outputFileName = sys.env("MOWER_OUTPUT")
+  val outputFile: File = File(outputFileName) // using constructor
+
+  // 6 On écrit le rapport dans le fichier
+  outputFile
+    .createIfNotExists()
+    .overwrite(Json.prettyPrint(Report.writes.writes(report)))
 
 }

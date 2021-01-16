@@ -2,7 +2,7 @@ package projetal2020
 
 import org.scalatest.funsuite.AnyFunSuite
 import projetal2020.CoordinateModule.Coordinate
-import projetal2020.MowerModule.{Mower, Mowers}
+import projetal2020.MowerModule.Mower
 
 class MowerParserSpec extends AnyFunSuite {
 
@@ -21,14 +21,14 @@ class MowerParserSpec extends AnyFunSuite {
       Instructions.Forward
     )
     assert(
-      Mowers.parser.parse(input) === Map(mowerToParse -> instructionsToParse)
+      Mower.parser.parse(input) === Map(mowerToParse -> instructionsToParse)
     )
   }
 
   test("Should parse successfully more than 1 mower") {
     val input = List("5 5", "1 2 N", "GA", "3 5 S", "AAD")
     assert(
-      Mowers.parser.parse(input) === Map(
+      Mower.parser.parse(input) === Map(
         Mower(Coordinate(1, 2), Direction.North) -> List(
           Instructions.Left,
           Instructions.Forward
@@ -44,13 +44,13 @@ class MowerParserSpec extends AnyFunSuite {
 
   test("Should throw a DonneesIncorectesException when parse an empty list") {
     assertThrows[DonneesIncorectesException](
-      Mowers.parser.parse(List())
+      Mower.parser.parse(List())
     )
   }
 
   test("Should throw a DonneesIncorectesException when parse an empty mower") {
     assertThrows[DonneesIncorectesException](
-      Mowers.parser.parse(List("10 10", "", "ADD"))
+      Mower.parser.parse(List("10 10", "", "ADD"))
     )
   }
 
@@ -58,7 +58,7 @@ class MowerParserSpec extends AnyFunSuite {
     "Should throw a DonneesIncorectesException when parse an a wrong formated mower"
   ) {
     assertThrows[DonneesIncorectesException](
-      Mowers.parser.parse(List("10 10", "N 1 2", "ADD"))
+      Mower.parser.parse(List("10 10", "N 1 2", "ADD"))
     )
   }
 

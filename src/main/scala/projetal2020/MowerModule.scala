@@ -1,5 +1,6 @@
 package projetal2020
 
+import play.api.libs.json.{Json, Writes}
 import projetal2020.CoordinateModule.Coordinate
 import projetal2020.ParserModule.Parser.isAllDigit
 import projetal2020.ParserModule.Parser
@@ -13,7 +14,9 @@ object MowerModule {
       "Mower ( point=" + point.toString + " , direction=" + direction.toString + " )"
   }
 
-  object Mowers {
+  object Mower {
+
+    implicit val writes: Writes[Mower] = Json.writes[Mower]
 
     @SuppressWarnings(Array("org.wartremover.warts.Throw"))
     def stringToMower(splitContent: List[String]): Mower = splitContent match {
