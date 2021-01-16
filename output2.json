@@ -3,8 +3,7 @@
     "x" : 3,
     "y" : 10
   },
-  "mowersStates" : [
-    {
+  "mowersStates" : [ {
     "start" : {
       "point" : {
         "x" : 3,
@@ -20,8 +19,7 @@
       },
       "direction" : "North"
     }
-  },
-    {
+  }, {
     "start" : {
       "point" : {
         "x" : 0,
@@ -37,8 +35,7 @@
       },
       "direction" : "South"
     }
-  },
-    {
+  }, {
     "start" : {
       "point" : {
         "x" : 0,
@@ -54,8 +51,7 @@
       },
       "direction" : "West"
     }
-  },
-    {
+  }, {
     "start" : {
       "point" : {
         "x" : 3,
@@ -71,6 +67,5 @@
       },
       "direction" : "East"
     }
-  }
-  ]
+  } ]
 }

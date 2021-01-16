@@ -4,7 +4,6 @@ import projetal2020.CoordinateModule.Coordinate
 import projetal2020.MowerModule.Mower
 
 import scala.annotation.tailrec
-import scala.collection.mutable.ListBuffer
 
 object MowerExecutor {
 
@@ -123,23 +122,30 @@ object MowerExecutor {
     )
   }
 
+  @tailrec
   def executeHelper(
       mowers: Map[Mower, List[Instructions.Value]],
-      rightTopCorner: Coordinate
-  ): List[MowerState] = {
-    val returnList = new ListBuffer[MowerState]
-    mowers foreach {
-      case (key, value) =>
-        returnList += executeInstructionList(key, value, rightTopCorner)
-    }
-    returnList.toList
+      rightTopCorner: Coordinate,
+      mowerStates: List[MowerState]
+  ): List[MowerState] = mowers.toList match {
+    case Nil => mowerStates
+    case head :: tail =>
+      executeHelper(
+        tail.toMap,
+        rightTopCorner,
+        mowerStates :+ executeInstructionList(
+          head._1,
+          mowers(head._1),
+          rightTopCorner
+        )
+      )
   }
 
   def execute(
       mowers: Map[Mower, List[Instructions.Value]],
       rightTopCorner: Coordinate
   ): List[MowerState] = {
-    executeHelper(mowers, rightTopCorner)
+    executeHelper(mowers, rightTopCorner, List())
   }
 
 }
