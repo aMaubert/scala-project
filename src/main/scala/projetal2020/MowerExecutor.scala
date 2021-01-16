@@ -5,10 +5,12 @@ import projetal2020.MowerModule.Mower
 
 import scala.annotation.tailrec
 
-object MowerExecutor {
+trait IMowerExecutor {
+  val mower: Mower
+  val rightTopCorner: Coordinate
+  val mowerStates: List[MowerState]
 
   def changeDirection(
-      mower: Mower,
       rotationInstruction: Instructions.Value
   ): Mower = rotationInstruction match {
     case Instructions.Right =>
@@ -35,10 +37,18 @@ object MowerExecutor {
       }
   }
 
-  def getDirection(mower: Mower, rightTopCorner: Coordinate): Mower =
+  def checkCollision(coordinate: Coordinate): Boolean = {
+    !mowerStates.exists(m => m.end.point.equals(coordinate))
+  }
+
+  def forward(): Mower =
     mower.direction match {
       case Direction.North =>
-        if (rightTopCorner.y.intValue() > mower.point.y.intValue()) {
+        if (rightTopCorner.y.intValue() > mower.point.y.intValue() &&
+            checkCollision(
+              Coordinate(mower.point.x, mower.point.y.intValue() + 1)
+            )) {
+
           val updatedCoord =
             new Coordinate(mower.point.x, mower.point.y.intValue() + 1)
           Mower(updatedCoord, mower.direction)
@@ -46,7 +56,10 @@ object MowerExecutor {
           mower
         }
       case Direction.East =>
-        if (rightTopCorner.x.intValue() > mower.point.x.intValue()) {
+        if (rightTopCorner.x.intValue() > mower.point.x.intValue() &&
+            checkCollision(
+              Coordinate(mower.point.x.intValue() + 1, mower.point.y)
+            )) {
           val updatedCoord =
             new Coordinate(mower.point.x.intValue() + 1, mower.point.y)
           Mower(updatedCoord, mower.direction)
@@ -54,7 +67,10 @@ object MowerExecutor {
           mower
         }
       case Direction.South =>
-        if (mower.point.y.intValue() > 0) {
+        if (mower.point.y.intValue() > 0 &&
+            checkCollision(
+              Coordinate(mower.point.x, mower.point.y.intValue() - 1)
+            )) {
           val updatedCoord =
             new Coordinate(mower.point.x, mower.point.y.intValue() - 1)
           Mower(updatedCoord, mower.direction)
@@ -62,7 +78,10 @@ object MowerExecutor {
           mower
         }
       case Direction.West =>
-        if (mower.point.x.intValue() > 0) {
+        if (mower.point.x.intValue() > 0 &&
+            checkCollision(
+              Coordinate(mower.point.x.intValue() - 1, mower.point.y)
+            )) {
           val updatedCoord =
             new Coordinate(mower.point.x.intValue() - 1, mower.point.y)
           Mower(updatedCoord, mower.direction)
@@ -71,50 +90,59 @@ object MowerExecutor {
         }
     }
 
-  def forward(
-      mower: Mower,
-      instruction: Instructions.Value,
-      rightTopCorner: Coordinate
-  ): Mower = instruction match {
-    case Instructions.Forward => getDirection(mower, rightTopCorner)
-  }
-
   def executeInstruction(
-      mower: Mower,
-      instruction: Instructions.Value,
-      rightTopCorner: Coordinate
+      instruction: Instructions.Value
   ): Mower = {
     instruction match {
-      case Instructions.Right   => changeDirection(mower, instruction)
-      case Instructions.Left    => changeDirection(mower, instruction)
-      case Instructions.Forward => forward(mower, instruction, rightTopCorner)
+      case Instructions.Right   => changeDirection(instruction)
+      case Instructions.Left    => changeDirection(instruction)
+      case Instructions.Forward => forward()
     }
   }
+
+}
+
+case class MowerExecutor(
+    mower: Mower,
+    rightTopCorner: Coordinate,
+    mowerStates: List[MowerState]
+) extends IMowerExecutor {}
+
+object MowerExecutor {
 
   @tailrec
   def executeInstructionListHelper(
       mower: Mower,
       instructions: List[Instructions.Value],
-      rightTopCorner: Coordinate
+      rightTopCorner: Coordinate,
+      mowerStates: List[MowerState]
   ): Mower = instructions match {
     case Nil => mower
-    case head :: tail =>
-      val updatedMower = executeInstruction(mower, head, rightTopCorner)
-      if (tail.nonEmpty) {
-        executeInstructionListHelper(updatedMower, tail, rightTopCorner)
-      } else {
-        updatedMower
-      }
+    case firstInstruction :: tailInstructions =>
+      val mowerExecutor = MowerExecutor(mower, rightTopCorner, mowerStates)
+      val updatedMower = mowerExecutor.executeInstruction(firstInstruction)
+      executeInstructionListHelper(
+        updatedMower,
+        tailInstructions,
+        rightTopCorner,
+        mowerStates
+      )
   }
 
   def executeInstructionList(
       mower: Mower,
       instructions: List[Instructions.Value],
-      rightTopCorner: Coordinate
+      rightTopCorner: Coordinate,
+      mowerStates: List[MowerState]
   ): MowerState = {
     val startMower = mower
     val updatedMower =
-      executeInstructionListHelper(mower, instructions, rightTopCorner)
+      executeInstructionListHelper(
+        mower,
+        instructions,
+        rightTopCorner,
+        mowerStates
+      )
     new MowerState(
       startMower,
       instructions,
@@ -136,7 +164,8 @@ object MowerExecutor {
         mowerStates :+ executeInstructionList(
           head._1,
           mowers(head._1),
-          rightTopCorner
+          rightTopCorner,
+          mowerStates
         )
       )
   }
